@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Futebol Brasil</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0f172a;
+  color: #fff;
+}
+header {
+  background: #16a34a;
+  padding: 12px;
+  text-align: center;
+  font-weight: bold;
+}
+nav {
+  display: flex;
+  justify-content: space-around;
+  background: #020617;
+}
+nav button {
+  flex: 1;
+  padding: 10px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 14px;
+}
+nav button:hover {
+  background: #16a34a;
+}
+section {
+  padding: 10px;
+}
+.card {
+  background: #020617;
+  padding: 10px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+}
+select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<header>⚽ Futebol Brasil</header>
+
+<nav>
+  <button onclick="mostrar('classificacao')">Tabela</button>
+  <button onclick="mostrar('resultados')">Jogos</button>
+  <button onclick="mostrar('escalacao')">Escalação</button>
+</nav>
+
+<section id="classificacao"></section>
+<section id="resultados" style="display:none"></section>
+<section id="escalacao" style="display:none"></section>
+
+<script>
+const API_KEY = "SUA_API_KEY_AQUI";
+const API = "https://v3.football.api-sports.io";
+
+function mostrar(id) {
+  document.querySelectorAll("section").forEach(s => s.style.display="none");
+  document.getElementById(id).style.display="block";
+}
+
+// ===== CLASSIFICAÇÃO SÉRIE A =====
+fetch(`${API}/standings?league=71&season=2024`, {
+  headers: { "x-apisports-key": API_KEY }
+})
+.then(r => r.json())
+.then(d => {
+  const tabela = d.response[0].league.standings[0];
+  let html = "<h3>Brasileirão Série A</h3>";
+  tabela.forEach(t => {
+    html += `<div class="card">
+      ${t.rank}º ${t.team.name} - ${t.points} pts
+    </div>`;
+  });
+  document.getElementById("classificacao").innerHTML = html;
+});
+
+// ===== ÚLTIMOS JOGOS =====
+fetch(`${API}/fixtures?league=71&season=2024&last=5`, {
+  headers: { "x-apisports-key": API_KEY }
+})
+.then(r => r.json())
+.then(d => {
+  let html = "<h3>Últimos Jogos</h3>";
+  d.response.forEach(j => {
+    html += `<div class="card">
+      ${j.teams.home.name} ${j.goals.home} x ${j.goals.away} ${j.teams.away.name}
+    </div>`;
+  });
+  document.getElementById("resultados").innerHTML = html;
+});
+
+// ===== ESCALAÇÃO =====
+document.getElementById("escalacao").innerHTML = `
+<h3>Escale seu time</h3>
+<select>
+  <option>4-3-3</option>
+  <option>4-4-2</option>
+  <option>3-5-2</option>
+</select>
+
+<div class="card">Goleiro</div>
+<div class="card">Zagueiro</div>
+<div class="card">Zagueiro</div>
+<div class="card">Lateral</div>
+<div class="card">Lateral</div>
+<div class="card">Meia</div>
+<div class="card">Meia</div>
+<div class="card">Meia</div>
+<div class="card">Atacante</div>
+<div class="card">Atacante</div>
+<div class="card">Atacante</div>
+`;
+</script>
+
+</body>
+</html>
