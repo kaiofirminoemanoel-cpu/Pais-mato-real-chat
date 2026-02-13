@@ -66,7 +66,7 @@ select {
 <section id="escalacao" style="display:none"></section>
 
 <script>
-const API_KEY = "SUA_API_KEY_AQUI";
+const API_KEY = "AIzaSyAjEP1fvFe-8Xzuuq1QJBaO2YnvygPTpcA";
 const API = "https://v3.football.api-sports.io";
 
 function mostrar(id) {
@@ -76,7 +76,7 @@ function mostrar(id) {
 
 // ===== CLASSIFICAÇÃO SÉRIE A =====
 fetch(`${API}/standings?league=71&season=2024`, {
-  headers: { "x-apisports-key": API_KEY }
+  headers: { "x-apisports-key": AIzaSyAjEP1fvFe-8Xzuuq1QJBaO2YnvygPTpcA }
 })
 .then(r => r.json())
 .then(d => {
@@ -92,7 +92,7 @@ fetch(`${API}/standings?league=71&season=2024`, {
 
 // ===== ÚLTIMOS JOGOS =====
 fetch(`${API}/fixtures?league=71&season=2024&last=5`, {
-  headers: { "x-apisports-key": API_KEY }
+  headers: { "x-apisports-key": AIzaSyAjEP1fvFe-8Xzuuq1QJBaO2YnvygPTpcA }
 })
 .then(r => r.json())
 .then(d => {
